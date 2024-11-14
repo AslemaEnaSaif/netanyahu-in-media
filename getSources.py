@@ -3,7 +3,7 @@ import requests
 nazifa_key = '8d1ef3a971f1422aac484c57ddba03b0'
 
 url = 'https://newsapi.org/v2/sources'
-country = "ca"
+country = "us"
 
 params = {
     'language': 'en',
@@ -18,6 +18,6 @@ if (response.status_code == 200):
     sources = data.get('sources', [])
     
     for source in sources:
-        print(f"{source['name']}")
+        print(f"{source['id']}", end=",")
 else:
     print('failed')        
