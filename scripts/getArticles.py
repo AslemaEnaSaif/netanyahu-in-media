@@ -47,7 +47,7 @@ def writeInCSV(filename, data, not_accepted_sources):
                 article.get("published")
             ])
 
-def generate_date_intervals(start_date, end_date, interval_days=5):
+def generate_date_intervals(start_date, end_date, interval_days=3):
     """Generate a list of (from, to) date tuples for the given date range split by interval_days."""
     intervals = []
     current_start = start_date
@@ -57,6 +57,16 @@ def generate_date_intervals(start_date, end_date, interval_days=5):
         current_start = current_end + timedelta(days=1)
     return intervals
 
+def generate_half_day_intervals(start_date, end_date):
+    """Generate a list of (from, to) datetime tuples for half-day intervals."""
+    intervals = []
+    current_start = start_date
+    while current_start < end_date:
+        current_end = min(current_start + timedelta(hours=12), end_date)
+        intervals.append((current_start.isoformat(), current_end.isoformat()))
+        current_start = current_end
+    return intervals
+
 def main():
     api_key = '8d1ef3a971f1422aac484c57ddba03b0'
     url = 'https://newsapi.org/v2/everything'
@@ -64,6 +74,13 @@ def main():
     
     headers = ["source", "title", "description", "content", "url", "publishedAt"]
     not_accepted_sources = [
+        "Ibtimes.com.au",
+        "Bangkok Post",
+        "Protothema.gr",
+        "Dagospia.com",
+        "Ibtimes.com.au",
+        "Www.gov.uk",
+        "Checkyourfact.com",
         "Nakedcapitalism.com",
         "BBC News",
         "The-sun.com",
@@ -103,18 +120,22 @@ def main():
         "The Irish Times"
         ]
     
+    #not_accepted_sources = []
+    
     data_dir = "data"
     os.makedirs(data_dir, exist_ok=True)  # create the data directory if it doesn't exist
-    file = "articlesTest.csv"
+    file = "articles.csv"
     filename = os.path.join(data_dir, file)  # full path to the CSV file
     initializeCSV(filename, headers)  # initialize CSV file with headers
 
-    start_date = datetime(2024, 10, 14)
-    end_date = datetime(2024, 11, 14)
+    start_date = datetime(2024, 10, 15)
+    end_date = datetime(2024, 11, 15)
     
     # generating date intervals
-    date_intervals = generate_date_intervals(start_date, end_date, interval_days=5)
+    date_intervals = generate_half_day_intervals(start_date, end_date)
 
+    print(date_intervals)
+    
     # fetch for each date interval
     for from_date, to_date in date_intervals:
         params = {
@@ -129,6 +150,7 @@ def main():
         }
         
         data = getArticle(url, params)
+        print(data["totalResults"])
 
         if data:
             print(f"Data accessed for date range {from_date} to {to_date}")
