@@ -44,7 +44,7 @@ def writeInCSV(filename, data, not_accepted_sources):
                 description,
                 content,
                 article.get("url"),
-                article.get("published")
+                article.get("publishedAt")
             ])
 
 def generate_date_intervals(start_date, end_date, interval_days=3):
@@ -124,7 +124,7 @@ def main():
     
     data_dir = "data"
     os.makedirs(data_dir, exist_ok=True)  # create the data directory if it doesn't exist
-    file = "articles.csv"
+    file = "articles2.csv"
     filename = os.path.join(data_dir, file)  # full path to the CSV file
     initializeCSV(filename, headers)  # initialize CSV file with headers
 
