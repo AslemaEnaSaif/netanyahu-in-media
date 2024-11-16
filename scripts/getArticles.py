@@ -4,6 +4,10 @@ import os
 import time
 from datetime import datetime, timedelta
 
+saif_key = "bf293b62915341ab96753bafd9e2da75"
+nazifa_key = "8d1ef3a971f1422aac484c57ddba03b0"
+alia_key = "7a42207e01934347aaeb6ccdf82aaf05"
+
 def getArticles(url, params):
     print("sending request")
     response = requests.get(url, params=params)
@@ -23,7 +27,7 @@ def initializeCSV(filename, headers):
             writer.writerow(headers)  # Adding the headers
 
 def writeInCSV(filename, data, not_accepted_sources):
-    with open(filename, mode="w", newline="", encoding="utf-8") as file:
+    with open(filename, mode="a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         for article in data["articles"]:
             if article["source"]["name"] in not_accepted_sources:
@@ -68,7 +72,7 @@ def generate_half_day_intervals(start_date, end_date):
     return intervals
 
 def main():
-    api_key = '8d1ef3a971f1422aac484c57ddba03b0'
+    api_key = saif_key
     url = 'https://newsapi.org/v2/everything'
     key_words = "netanyahu OR Netanyahu"
     
@@ -121,7 +125,7 @@ def main():
         ]
     
     
-    data_dir = "data"
+    data_dir = "data/raw"
     os.makedirs(data_dir, exist_ok=True)  # create the data directory if it doesn't exist
     file = "duplicated_articles_16oct_16nov.csv"
     filename = os.path.join(data_dir, file)  # full path to the CSV file

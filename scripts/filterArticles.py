@@ -18,6 +18,7 @@ def write_articles_slice(input_path, output_path, start_line, end_line):
                 if lineNum > end_line:
                     break
                 writer.writerow([
+                    "", # placeholder
                     "",  # placeholder
                     row["source"],
                     row["title"],
@@ -56,18 +57,20 @@ def split_articles(file_path, names):
 
     for name, start_line, end_line in articles_slices:
         filename = f"{name}_unprocessed_data_oct15_nov15.csv"
-        output_file_path = "../data/raw/" + filename
-        initializeCSV(output_file_path, headers)
+        output_file_path = "data/raw/" + filename
         write_articles_slice(file_path, output_file_path, start_line, end_line)
 
 
 
 def main():
-    duplicated_articles_path = "../data/raw/duplicated_articles_15oct_15nov.csv"
-    unique_articles_file = "../data/raw/articles_15oct_15nov.csv"
+    duplicated_articles_path = "data/raw/duplicated_articles_total.csv"
+    unique_articles_file = "data/raw/articles_total.csv"
+    initializeCSV(unique_articles_file, headers)
+    
     names = ["saif", "alia", "naz"]
     print("exists?",os.path.exists(duplicated_articles_path))
-    # remove_duplicate_articles(duplicated_articles_path, unique_articles_file)
+    
+    remove_duplicate_articles(duplicated_articles_path, unique_articles_file)
 
     split_articles(unique_articles_file,names)
 
