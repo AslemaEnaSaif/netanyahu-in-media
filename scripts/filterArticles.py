@@ -26,15 +26,34 @@ def filterArticles(input_path, output_path, start_line, end_line):
                     row["publishedAt"],
                 ])
                 
+def remove_duplicate_articles(input_path, output_path):
+    seen_titles= set()
+    with open(input_path, "r", encoding="utf-8") as input_file, open(output_path, "w", newline="", encoding="utf-8") as output_file :
+        reader = csv.DictReader(input_file)
+        writer = csv.DictWriter(output_file, fieldnames=reader.fieldnames)
+        writer.writeheader()
+        for row in reader:
+            title = row["title"]
+            if title not in seen_titles:
+                seen_titles.add(title)
+                writer.writerow(row)  # Write non-duplicate row
+            else:
+                print("this title is duplicate: ", title)
 
-def main():
-    name = "saif"
-    filename = f"{name}FullUnprocessedData.csv"
-    headers = ["category", "source", "title", "description", "content", "url", "publishedAt"]
+
     
-    outputFilePath = "data/raw/" + filename
-    inputFilePath = "data/raw/articles.csv"
-    initializeCSV(outputFilePath, headers)
+def main():
+    duplicated_articles_path = "../data/raw/duplicated_articles.csv"
+    unique_articles_file = "../data/raw/articles.csv"
+    names = ["saif", "alia", "naz"]
+    headers = ["sentiment","category", "source", "title", "description", "content", "url", "publishedAt"]
+    print("exists?",os.path.exists(duplicated_articles_path))
+    remove_duplicate_articles(duplicated_articles_path, unique_articles_file)
+
+    # for name in names:
+    #     filename = f"{name}FullUnprocessedData.csv"
+    #     outputFilePath = "data/raw/" + filename
+    #     initializeCSV(outputFilePath, headers)
     
     #naz
     # start = 1
@@ -47,8 +66,7 @@ def main():
     #saif
     start = 467
     end = 700
-    
-    filterArticles(inputFilePath, outputFilePath, start, end)           
+    # filterArticles(duplicate_articles_path, output_file_path, start, end)           
 
 if __name__ == "__main__":
     main()

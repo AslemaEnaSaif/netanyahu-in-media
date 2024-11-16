@@ -4,7 +4,7 @@ import os
 import time
 from datetime import datetime, timedelta
 
-def getArticle(url, params):
+def getArticles(url, params):
     print("sending request")
     response = requests.get(url, params=params)
     
@@ -149,7 +149,7 @@ def main():
             "to": to_date
         }
         
-        data = getArticle(url, params)
+        data = getArticles(url, params)
         print(data["totalResults"])
 
         if data:
