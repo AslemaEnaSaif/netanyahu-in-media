@@ -23,7 +23,7 @@ def initializeCSV(filename, headers):
             writer.writerow(headers)  # Adding the headers
 
 def writeInCSV(filename, data, not_accepted_sources):
-    with open(filename, mode="a", newline="") as file:
+    with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         for article in data["articles"]:
             if article["source"]["name"] in not_accepted_sources:
@@ -82,15 +82,15 @@ def main():
         "Www.gov.uk",
         "Checkyourfact.com",
         "Nakedcapitalism.com",
-        "BBC News",
-        "The-sun.com",
+        # "BBC News", #?
+        # "The-sun.com", #?
         "Nakedcapitalism.com",
         "RT",
         "Sputnikglobe.com",
-        "The Week Magazine",
+        # "The Week Magazine", #?
         "Juancole.com",
         "[Removed]",
-        "DW (English)",
+        # "DW (English)", #?
         "Politicalwire.com",
         "CNA",
         "Globalsecurity.org",
@@ -98,8 +98,8 @@ def main():
         "Legalinsurrection.com",
         "Independent.ie",
         "TheJournal.ie",
-        "The Jerusalem Post",
-        "Americanthinker.com",
+        # "The Jerusalem Post", #?
+        # "Americanthinker.com", #?
         "NDTV News",
         "The Times of India",
         "Israelnationalnews.com",
@@ -108,28 +108,27 @@ def main():
         "Inter Press Service",
         "Setopati.com",
         "Dianeravitch.net",
-        "Electronicintifada.net", # not sure about this one
+        # "Electronicintifada.net", # not sure about this one #?
         "Jewishnews.co.uk",
         "Times of Malta",
         "Tbsnews.net",
         "Japan Today",
-        "Sky.com",
+        # "Sky.com", #?
         "ABC News (AU)",
         "The Punch",
         "The Online Citizen",
         "The Irish Times"
         ]
     
-    #not_accepted_sources = []
     
     data_dir = "data"
     os.makedirs(data_dir, exist_ok=True)  # create the data directory if it doesn't exist
-    file = "articles2.csv"
+    file = "duplicated_articles_16oct_16nov.csv"
     filename = os.path.join(data_dir, file)  # full path to the CSV file
     initializeCSV(filename, headers)  # initialize CSV file with headers
 
-    start_date = datetime(2024, 10, 15)
-    end_date = datetime(2024, 11, 15)
+    start_date = datetime(2024, 10, 16)
+    end_date = datetime(2024, 11, 16)
     
     # generating date intervals
     date_intervals = generate_half_day_intervals(start_date, end_date)
