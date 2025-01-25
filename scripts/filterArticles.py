@@ -4,6 +4,7 @@ from getArticles import initializeCSV
     
 headers = ["sentiment","category", "source", "title", "description", "content", "url", "publishedAt"]
 
+
 def write_articles_slice(input_path, output_path, start_line, end_line):
     with open(input_path, "r", encoding="utf-8") as input_file:
         reader = csv.DictReader(input_file)
